@@ -26,9 +26,10 @@ def work():
 @app.route("/merchants", methods=['POST'])
 def add_merchant():
     body = request.get_json();
+    print body
+
     _id = body['id']
     token = body['token']
-    print token
 
     lock.acquire()
     if _id in [merchant.id for merchant in merchants]:
@@ -50,8 +51,11 @@ class CrawlerWork(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        work()
+        while True:
+            work()
+            print "working..."
+            time.sleep(1)
 
 crawler_working = CrawlerWork()
-#crawler_working.start()
+crawler_working.start()
 

@@ -2,9 +2,7 @@ import requests
 
 def get_on_facebook(route, token):
     url = "https://graph.facebook.com/v2.10/%s&access_token=%s" % (route,token)
-    print url
     response = requests.get(url)
-    print response
     response.status_code == 200 or quit("Can't get post from page. " + response.reason)
     return response.json()
 
@@ -23,16 +21,12 @@ def send_pay(merchant_id, payer_id, amount):
     body = {
         'FacebookSellerId' : merchant_id,
         'FacebookBuyerId' : payer_id,
-        'Amount' : amount
+        'Amount' : int(float(amount)*100)
     }
 
-    print body
+    response = requests.post(endpoint, json=body);
 
-    #response = requests.post(endpoint, json=body);
-
-    #print response
-
-    return True #response.status_code == 201
+    return response.status_code == 201
 
 class Bid():
 
