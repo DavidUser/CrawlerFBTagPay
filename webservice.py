@@ -17,27 +17,28 @@ merchants = []
 def work():
     lock.acquire()
     for merchant in merchants:
-        merchant.update_all_payments();
-        merchant.charge_payments();
-        merchant.print_payments();
+        if merchant.update_all_payments() is None:
+            merchants.remove(merchant)
+            continue
+        merchant.charge_payments()
+        merchant.print_payments()
     lock.release()
     return 'done'
 
 @app.route("/merchants", methods=['POST'])
 def add_merchant():
-    body = request.get_json();
-    print body
+    body = request.get_json()
 
     _id = body['id']
     token = body['token']
 
     lock.acquire()
-    if _id in [merchant.id for merchant in merchants]:
+    if _id in [merchant._id for merchant in merchants]:
         lock.release()
         return 'Merchant %s already on database.' % _id
 
     merchant = Merchant(_id, token)
-    print merchant.token
+    print (merchant.token)
     merchants.append(merchant)
     lock.release()
 
@@ -53,9 +54,9 @@ class CrawlerWork(threading.Thread):
     def run(self):
         while True:
             work()
-            print "working..."
-            time.sleep(1)
+            time.sleep(10)
+            print ("working...")
 
 crawler_working = CrawlerWork()
 crawler_working.start()
-
+app.run()
