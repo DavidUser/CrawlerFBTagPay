@@ -17,6 +17,7 @@ def send_pay(merchant_id, payer_id, amount):
     :returns: True if payment is approved.
 
     """
+    #TODO put configuration on other file
     endpoint = 'http://c821dd2e.ngrok.io/api/transaction'
     body = {
         'FacebookSellerId' : merchant_id,

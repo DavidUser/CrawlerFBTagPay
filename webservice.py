@@ -32,7 +32,7 @@ def add_merchant():
     token = body['token']
 
     lock.acquire()
-    if _id in [merchant.id for merchant in merchants]:
+    if _id in [merchant._id for merchant in merchants]:
         lock.release()
         return 'Merchant %s already on database.' % _id
 
