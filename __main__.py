@@ -1,17 +1,15 @@
+#!/usr/bin/env python
+
 import crawler
+from webservice import webservice, CrawlerWork
 
 def main():
     """Main function
     """
-
-    merchants = [
-        crawler.Merchant('276973842707396')
-    ]
-
-    for merchant in merchants:
-        merchant.update_all_payments()
-        print "Merchant: " + merchant.id
-        merchant.print_payments()
+    crawler_working = CrawlerWork()
+    crawler_working.daemon = True
+    crawler_working.start()
+    webservice.run('0.0.0.0')
 
 if __name__ == "__main__":
     main()
