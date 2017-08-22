@@ -25,8 +25,7 @@ def work():
 
 @webservice.route("/merchants", methods=['POST'])
 def add_merchant():
-    body = request.get_json();
-    print body
+    body = request.get_json()
 
     _id = body['id']
     token = body['token']

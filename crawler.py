@@ -3,7 +3,9 @@ import requests
 def get_on_facebook(route, token):
     url = "https://graph.facebook.com/v2.10/%s&access_token=%s" % (route,token)
     response = requests.get(url)
-    response.status_code == 200 or quit("Can't get post from page. " + response.reason)
+    if response.status_code != 200:
+        raise Exception("Can't get post from page. " + response.reason)
+    #TODO check unexpected results
     return response.json()
 
 def get_comments(_id, token):
