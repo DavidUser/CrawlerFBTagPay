@@ -1,9 +1,9 @@
 import threading
 from flask import Flask, request
 
-app = Flask(__name__)
+webservice = Flask(__name__)
 
-@app.route("/health")
+@webservice.route("/health")
 def root():
     return 'Alive.'
 
@@ -13,7 +13,7 @@ lock = threading.Lock()
 
 merchants = []
 
-@app.route("/work")
+@webservice.route("/work")
 def work():
     lock.acquire()
     for merchant in merchants:
@@ -23,7 +23,7 @@ def work():
     lock.release()
     return 'done'
 
-@app.route("/merchants", methods=['POST'])
+@webservice.route("/merchants", methods=['POST'])
 def add_merchant():
     body = request.get_json();
     print body
@@ -55,7 +55,4 @@ class CrawlerWork(threading.Thread):
             work()
             print "working..."
             time.sleep(1)
-
-crawler_working = CrawlerWork()
-crawler_working.start()
 
